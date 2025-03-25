@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class VideoAudioController : MonoBehaviour
 {
@@ -6,21 +7,21 @@ public class VideoAudioController : MonoBehaviour
     [SerializeField] private AudioClip _clickClip;
     [SerializeField] private AudioClip _filledClip;
     
-    [SerializeField] private ClicksCounter _clicksCounter;
-    [SerializeField] private FilledProgressHandler _filledProgressHandler;
+    [SerializeField] private VideoUIPresenter _videoUIPresenter;
+    [SerializeField] private VideoPlayerWrapper _videoPlayerWrapper;
 
     private void Awake()
     {
-        _clicksCounter.Changed += OnClicked;
-        _filledProgressHandler.Filled += OnFilled;
+        _videoUIPresenter.Tapped += OnTapped;
+        _videoPlayerWrapper.FinalVideoStarted += OnFinalVideoStarted;
     }
 
-    private void OnFilled()
+    private void OnFinalVideoStarted()
     {
         _audioSource.PlayOneShot(_filledClip);
     }
 
-    private void OnClicked(int obj)
+    private void OnTapped()
     {
         _audioSource.PlayOneShot(_clickClip);
     }

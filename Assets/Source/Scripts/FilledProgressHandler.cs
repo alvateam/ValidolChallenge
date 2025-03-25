@@ -5,7 +5,7 @@ public class FilledProgressHandler : MonoBehaviour
 {
     private const float MaxEnergy = 100f;
     
-    [SerializeField] private InputActionsHandler _inputActionsHandler;
+    [SerializeField] private VideoUIPresenter _videoUIPresenter;
 
     private float _energyGain;
     private float _difficultyMultiplier;
@@ -20,14 +20,13 @@ public class FilledProgressHandler : MonoBehaviour
         _energyGain = energyGain;
         _difficultyMultiplier = difficultyMultiplier;
         
-        _inputActionsHandler.Clicked += OnClicked;
-        _inputActionsHandler.RestartButtonClicked += OnRestartButtonClicked;
+        _videoUIPresenter.Tapped += OnTapped;
+        _videoUIPresenter.RestartButtonClicked += OnRestartButtonClicked;
     }
 
     private void OnRestartButtonClicked()
     {
-        _inputActionsHandler.Clicked -= OnClicked;
-        _inputActionsHandler.Clicked += OnClicked;
+        _videoUIPresenter.Tapped += OnTapped;
         _currentEnergy = 0;
         _isFilled = false;
         UpdateProgress();
@@ -39,14 +38,14 @@ public class FilledProgressHandler : MonoBehaviour
             UpdateEnergyDrain();
     }
 
-    private void OnClicked()
+    private void OnTapped()
     {
         _currentEnergy = Mathf.Min(_currentEnergy + _energyGain, MaxEnergy);
         UpdateProgress();
         
         if (_currentEnergy >= MaxEnergy)
         {
-            _inputActionsHandler.Clicked -= OnClicked;
+            _videoUIPresenter.Tapped -= OnTapped;
             _isFilled = true;
             Filled?.Invoke();
         }

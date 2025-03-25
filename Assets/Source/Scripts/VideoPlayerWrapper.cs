@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -9,13 +10,16 @@ public class VideoPlayerWrapper : MonoBehaviour
     [SerializeField] private VideoPlayer _videoPlayer;
     [SerializeField] private RawImage _rawImage;
 
-    [SerializeField] private InputActionsHandler _inputActionsHandler;
+    [SerializeField] private VideoUIPresenter _videoUIPresenter;
     [SerializeField] private FilledProgressHandler _filledProgressHandler;
 
     private VideoClip _loopedVideoClip;
     private VideoClip _finalVideoClip;
     private Texture _placeholderTexture;
     private RenderTexture _renderTexture;
+
+    public event Action FinalVideoStarted;
+    public event Action FinalVideoFinished; 
 
     public void Initialize(VideoClip loopedVideo, VideoClip finalVideo)
     {
@@ -26,8 +30,8 @@ public class VideoPlayerWrapper : MonoBehaviour
         _videoPlayer.sendFrameReadyEvents = true;
         
         _filledProgressHandler.Filled += OnFilled;
-        _inputActionsHandler.Clicked += OnClicked;
-        _inputActionsHandler.RestartButtonClicked += OnRestartButtonClicked;
+        _videoUIPresenter.Tapped += OnTapped;
+        _videoUIPresenter.RestartButtonClicked += OnRestartButtonClicked;
         
         InitializeRenderTexture();
         
@@ -113,7 +117,7 @@ public class VideoPlayerWrapper : MonoBehaviour
     private void OnRestartButtonClicked()
     {
         _filledProgressHandler.Filled += OnFilled;
-        _inputActionsHandler.Clicked += OnClicked;
+        _videoUIPresenter.Tapped += OnTapped;
 
         _videoPlayer.frameReady -= OnFrameReady;
         _videoPlayer.loopPointReached -= OnLoopVideoFinished;
@@ -126,7 +130,7 @@ public class VideoPlayerWrapper : MonoBehaviour
 
     private void OnFilled()
     {
-        _inputActionsHandler.Clicked -= OnClicked;
+        _videoUIPresenter.Tapped -= OnTapped;
         _filledProgressHandler.Filled -= OnFilled;
 
         if (_videoPlayer.isPlaying)
@@ -143,14 +147,16 @@ public class VideoPlayerWrapper : MonoBehaviour
 
     private void PlayFinalVideo()
     {
-        if (_finalVideoClip == null)
+        if (_videoPlayer.isPrepared)
         {
-            Debug.LogError("Final video clip is not assigned!");
-            return;
+            OnFinalVideoPrepared(_videoPlayer);
         }
-        
-        _videoPlayer.prepareCompleted += OnFinalVideoPrepared; 
-        _videoPlayer.Prepare();
+        else
+        {
+            _videoPlayer.prepareCompleted += OnFinalVideoPrepared; 
+            _videoPlayer.Prepare(); 
+        }
+     
     }
     
     private void OnFinalVideoPrepared(VideoPlayer vp)
@@ -161,20 +167,23 @@ public class VideoPlayerWrapper : MonoBehaviour
     
     private void StartFinalVideoPlayback()
     {
-        PlayVideo(_finalVideoClip);
+        _videoPlayer.loopPointReached += OnFinalVideoFinished;
+        _videoPlayer.clip = _finalVideoClip;
+        FinalVideoStarted?.Invoke();
+        _videoPlayer.Play();
         StartCoroutine(UpdateRawImageAfterDelay(RawImageAfterDelay));
     }
-    
-    private void OnClicked()
+
+    private void OnFinalVideoFinished(VideoPlayer source)
+    {
+        _videoPlayer.loopPointReached -= OnFinalVideoFinished;
+        FinalVideoFinished?.Invoke();
+    }
+
+    private void OnTapped()
     {
         if (_placeholderTexture != null) 
             RestartVideo();
-    }
-
-    private void PlayVideo(VideoClip videoClip)
-    {
-        _videoPlayer.clip = videoClip;
-        _videoPlayer.Play();
     }
     
     private void OnDestroy()

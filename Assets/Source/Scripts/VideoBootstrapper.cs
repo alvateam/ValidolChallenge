@@ -1,12 +1,13 @@
 using Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class VideoBootstrapper : MonoBehaviour
 {
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private VideoPlayerWrapper _videoPlayer;
     [SerializeField] private FilledProgressHandler _filledProgressHandler;
-    [SerializeField] private VideoUI _videoUI;
+    [FormerlySerializedAs("videoUIView")] [FormerlySerializedAs("_videoUI")] [SerializeField] private VideoUIPresenter videoUIPresenter;
 
     public RectTransform RectTransform => _rectTransform;
 
@@ -14,7 +15,7 @@ public class VideoBootstrapper : MonoBehaviour
     {
         _videoPlayer.Initialize(data.LoopedVideo, data.FinalVideo);
         _filledProgressHandler.Initialize(data.EnergyGain, data.DifficultyMultiplier);
-        _videoUI.Initialize(videoNumber);
+        videoUIPresenter.Initialize(videoNumber);
     }
     
 }
