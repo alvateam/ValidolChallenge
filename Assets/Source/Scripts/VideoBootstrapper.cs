@@ -1,13 +1,18 @@
 using Data;
+using TS.PageSlider;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class VideoBootstrapper : MonoBehaviour
 {
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private VideoPlayerWrapper _videoPlayer;
     [SerializeField] private FilledProgressHandler _filledProgressHandler;
-    [FormerlySerializedAs("videoUIView")] [FormerlySerializedAs("_videoUI")] [SerializeField] private VideoUIPresenter videoUIPresenter;
+    [SerializeField] private VideoUIPresenter _videoUIPresenter;
+    [SerializeField] private GradeHandler _gradeHandler;
+    [SerializeField] private TapsCounter _tapsCounter;
+    
+    public TapsCounter TapsCounter => _tapsCounter;
+    public VideoPlayerWrapper VideoPlayerWrapper => _videoPlayer;
 
     public RectTransform RectTransform => _rectTransform;
 
@@ -15,7 +20,7 @@ public class VideoBootstrapper : MonoBehaviour
     {
         _videoPlayer.Initialize(data.LoopedVideo, data.FinalVideo);
         _filledProgressHandler.Initialize(data.EnergyGain, data.DifficultyMultiplier);
-        videoUIPresenter.Initialize(videoNumber);
+        _videoUIPresenter.Initialize(videoNumber);
+        _gradeHandler.Initialize(data.IdealClicks);
     }
-    
 }

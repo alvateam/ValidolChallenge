@@ -56,7 +56,7 @@ namespace TS.PageSlider
         /// Gets the rectangle of the PageSlider component.
         /// </summary>
         public Rect Rect { get { return ((RectTransform)transform).rect; } }
-
+        
         private PageScroller _scroller;
 
         #endregion
@@ -76,7 +76,10 @@ namespace TS.PageSlider
             _scroller.SetPage(_startPageIndex);
         }
 
-
+        public void SetScrollingAllow(bool value)
+        {
+           _scroller.SetScrollingAllow(value);
+        }
         /// <summary>
         /// Adds a new page to the PageSlider. 
         /// The content argument specifies the RectTransform of the content to be displayed on the new page.

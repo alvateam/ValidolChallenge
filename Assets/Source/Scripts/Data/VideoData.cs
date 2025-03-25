@@ -10,16 +10,19 @@ namespace Data
         [SerializeField] private VideoType _videoType;
         [SerializeField] private VideoClip _loopedVideo;
         [SerializeField] private VideoClip _finalVideo;
-        [SerializeField] private Sprite _firstFrameSprite;
         [SerializeField] private float _energyGain;
         [SerializeField] private float _difficultyMultiplier;
+        [SerializeField] private int _idealClicks;
+        [SerializeField] private bool _lockedByStarts;
+        [SerializeField] private int _starsToUnlock;
 
         public string ID => _id;
         public VideoType VideoType => _videoType;
         public VideoClip LoopedVideo => _loopedVideo;
         public VideoClip FinalVideo => _finalVideo;
-        public Sprite FirstFrameSprite => _firstFrameSprite;
         public float EnergyGain => _energyGain;
         public float DifficultyMultiplier => _difficultyMultiplier;
+
+        public int IdealClicks => _idealClicks;
     }
 }

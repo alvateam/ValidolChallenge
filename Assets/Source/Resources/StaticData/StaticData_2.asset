@@ -16,6 +16,8 @@ MonoBehaviour:
   _videoType: 1
   _loopedVideo: {fileID: 32900000, guid: c087594e4e6dbf347afc167858fa7c83, type: 3}
   _finalVideo: {fileID: 32900000, guid: 6e21fc9e287796840ad1b5ec6e0bb531, type: 3}
-  _firstFrameSprite: {fileID: -1803403023426649265, guid: 951826f31f4f1e24193508fba0d5147a, type: 3}
   _energyGain: 10
   _difficultyMultiplier: 5
+  _idealClicks: 16
+  _lockedByStarts: 0
+  _starsToUnlock: 0

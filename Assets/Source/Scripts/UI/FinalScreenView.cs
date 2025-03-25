@@ -43,4 +43,13 @@ public class FinalScreenView : MonoBehaviour, IDisposable
     
     public void Dispose() => 
         _restartButton.onClick.RemoveListener(OnRestartButtonClicked);
+
+    public void SetGrade(int value)
+    {
+        for (int i = 0; i < value; i++)
+        {
+            var view = _gradeViews[i];
+            view.ShowGrade();
+        }
+    }
 }

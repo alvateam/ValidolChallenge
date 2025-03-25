@@ -551,6 +551,7 @@ GameObject:
   - component: {fileID: 1026001795071112092}
   - component: {fileID: 132993111788542569}
   - component: {fileID: 7996865585203275944}
+  - component: {fileID: 5558516157474365493}
   - component: {fileID: 4785173728170288801}
   m_Layer: 5
   m_Name: VideoContainer
@@ -614,6 +615,7 @@ MonoBehaviour:
   _tapScreenView: {fileID: 7934900117475409652}
   _finalScreenView: {fileID: 8770076605060325400}
   _videoPlayer: {fileID: 7325681495924944357}
+  _gradeHandler: {fileID: 5558516157474365493}
 --- !u!114 &2120100991305394131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,7 +658,9 @@ MonoBehaviour:
   _rectTransform: {fileID: 789938858457034247}
   _videoPlayer: {fileID: 7325681495924944357}
   _filledProgressHandler: {fileID: 3135866702435010388}
-  videoUIPresenter: {fileID: 1588344791531770649}
+  _videoUIPresenter: {fileID: 1588344791531770649}
+  _gradeHandler: {fileID: 5558516157474365493}
+  _tapsCounter: {fileID: 2120100991305394131}
 --- !u!114 &1026001795071112092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,6 +811,20 @@ VideoPlayer:
   m_WaitForFirstFrame: 0
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
+--- !u!114 &5558516157474365493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4128109803061800936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c4802476d3bd14fb275dc0135676bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tapsCounter: {fileID: 2120100991305394131}
+  _videoPlayer: {fileID: 7325681495924944357}
 --- !u!114 &4785173728170288801
 MonoBehaviour:
   m_ObjectHideFlags: 0

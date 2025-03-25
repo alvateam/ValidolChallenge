@@ -9,6 +9,7 @@ public class TapsCounter : MonoBehaviour
     public int Count { get; private set; }
     
     public event Action<int> Changed;
+    public event Action TappingStated;
 
     private void Awake()
     {
@@ -32,6 +33,10 @@ public class TapsCounter : MonoBehaviour
     private void OnTapped()
     {
         Count++;
+        
+        if(Count == 1)
+            TappingStated?.Invoke();
+        
         Changed?.Invoke(Count);
     }
 }

@@ -78,7 +78,7 @@ namespace TS.PageSlider
                 return _scrollRect.content;
             }
         }
-
+        
         private ScrollRect _scrollRect;
 
         private int _currentPage; // Index of the currently active page.
@@ -128,6 +128,11 @@ namespace TS.PageSlider
                 // Update the _currentPage variable to reflect the new active page.
                 _currentPage = _targetPage;
             }
+        }
+
+        public void SetScrollingAllow(bool value)
+        {
+            _scrollRect.enabled = value;
         }
 
         public void SetPage(int index)

@@ -55,8 +55,8 @@ public class FilledProgressHandler : MonoBehaviour
     {
         if (_currentEnergy > 0)
         {
-            float difficulty = GetDifficultyFactor();
-            _currentEnergy = Mathf.Max(_currentEnergy - difficulty * Time.deltaTime * 10f, 0f);
+            float drainRate = GetDrainRate();
+            _currentEnergy = Mathf.Max(_currentEnergy - drainRate, 0f);
 
             UpdateProgress();
         }
@@ -69,5 +69,10 @@ public class FilledProgressHandler : MonoBehaviour
     {
         var progress = _currentEnergy / MaxEnergy;
         ProgressChanged?.Invoke(progress);
+    }
+
+    private float GetDrainRate()
+    {
+        return GetDifficultyFactor() * Time.deltaTime * 10f;
     }
 }

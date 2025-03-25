@@ -9,6 +9,7 @@ public class VideoUIPresenter : MonoBehaviour, IDisposable
     [SerializeField] private TapScreenView _tapScreenView;
     [SerializeField] private FinalScreenView _finalScreenView;
     [SerializeField] private VideoPlayerWrapper _videoPlayer;
+    [SerializeField] private GradeHandler _gradeHandler;
 
     public event Action RestartButtonClicked;
     public event Action Tapped;
@@ -27,12 +28,15 @@ public class VideoUIPresenter : MonoBehaviour, IDisposable
         _tapsCounter.Changed += OnTapsChanged;
         _filledProgressHandler.ProgressChanged += OnFilledProgressChanged;
         _filledProgressHandler.Filled += OnProgressFilled;
+
+        _gradeHandler.GradeCalculated += OnGradeCalculated;
     }
 
-    private void OnProgressFilled()
-    {
+    private void OnGradeCalculated(int value) => 
+        _finalScreenView.SetGrade(value);
+
+    private void OnProgressFilled() => 
         _tapScreenView.Hide();
-    }
 
     private void OnFinalVideoFinished()
     {

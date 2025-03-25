@@ -167,10 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -231,8 +231,9 @@ GameObject:
   m_Component:
   - component: {fileID: 398341270}
   - component: {fileID: 398341273}
+  - component: {fileID: 398341274}
   m_Layer: 0
-  m_Name: VideosFactory
+  m_Name: Scripts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,6 +271,20 @@ MonoBehaviour:
   _videoDatas:
   - {fileID: 11400000, guid: 959f11b8cecfab645be0540c1de34c98, type: 2}
   - {fileID: 11400000, guid: 6e898f3820cb5784da166b4fb3540df4, type: 2}
+  _pageSlider: {fileID: 2230961184096568824}
+--- !u!114 &398341274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398341266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a793de1eaa8901f41af7f9906239c79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _videosFactory: {fileID: 398341273}
   _pageSlider: {fileID: 2230961184096568824}
 --- !u!1 &519420028
 GameObject:
