@@ -101,7 +101,7 @@ namespace TS.PageSlider
 
             // Get the current normalized position of the scroll rect (between 0 and 1).
             // Update the current position based on the move speed and deltaTime.
-            var position = _scrollRect.verticalNormalizedPosition;
+            var position = InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition);
             position += _moveSpeed * Time.deltaTime;
 
             // Determine the minimum and maximum allowed positions based on the move direction:
@@ -113,7 +113,7 @@ namespace TS.PageSlider
             position = Mathf.Clamp(position, min, max);
 
             // Update the actual position of the scroll rect in the ScrollRect component.
-            _scrollRect.verticalNormalizedPosition = position;
+            _scrollRect.verticalNormalizedPosition = InvertNormalizedPosition(position);
 
             // Check if the scroll rect has reached the target position (within a small tolerance using Mathf.Epsilon).
             if (Mathf.Abs(_targetNormalizedPosition - position) < Mathf.Epsilon)
@@ -137,7 +137,7 @@ namespace TS.PageSlider
 
         public void SetPage(int index)
         {
-            _scrollRect.verticalNormalizedPosition = GetTargetPagePosition(index);
+            _scrollRect.verticalNormalizedPosition = InvertNormalizedPosition(GetTargetPagePosition(index));
 
             _targetPage = index;
             _currentPage = index;
@@ -147,7 +147,7 @@ namespace TS.PageSlider
         public void OnBeginDrag(PointerEventData eventData)
         {
             // Store the starting normalized position of the scroll bar.
-            _startNormalizedPosition = _scrollRect.verticalNormalizedPosition;
+            _startNormalizedPosition = InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition);
 
             // Check if the target page is different from the current page.
             if (_targetPage != _currentPage)
@@ -173,23 +173,23 @@ namespace TS.PageSlider
         {
             // Calculate the width of a single page (normalized value between 0 and 1).
             // This is achieved by dividing 1 by the total number of pages.
-            var pageWidth = 1f / GetPageCount();
+            var pageHeight = 1f / GetPageCount();
 
             // Calculate the normalized position of the current page.
             // When snapping to a page, this position should ideally match the starting normalized position.
-            var pagePosition = _currentPage * pageWidth;
+            var pagePosition = _currentPage * pageHeight;
 
             // Get the current normalized position of the scroll rect.
-            var currentPosition = _scrollRect.verticalNormalizedPosition;
+            var currentPosition = InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition);
 
             // Determine the minimum amount of drag required (normalized value) to consider a page change.
             // This is calculated by multiplying the page width by the _minDeltaDrag value.
-            var minPageDrag = pageWidth * _minDeltaDrag;
+            var minPageDrag = pageHeight * _minDeltaDrag;
 
             // Check if the drag direction is forward or backward.
             // This is determined by comparing the current position with the starting position.
             // A higher current position indicates a forward drag.
-            var isForwardDrag = _scrollRect.verticalNormalizedPosition > _startNormalizedPosition;
+            var isForwardDrag = InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition) > _startNormalizedPosition;
 
             // Calculate the normalized position where a page change should occur (switchPageBreakpoint).
             // This is calculated by adding (for forward drag) or subtracting (for backward drag) 
@@ -215,6 +215,11 @@ namespace TS.PageSlider
             ScrollToPage(page);
         }
 
+        private float InvertNormalizedPosition(float value)
+        {
+            return 1f - value;
+        }
+        
         /// <summary>
         /// This function handles initiating a page change animation based on a target page index 
         /// during a scroll interaction. It calculates the target scroll position, determines if a page change 
@@ -227,7 +232,7 @@ namespace TS.PageSlider
             _targetNormalizedPosition = GetTargetPagePosition(page);
 
             // Calculate the speed required to reach the target position within the snap duration.
-            _moveSpeed = (_targetNormalizedPosition - _scrollRect.verticalNormalizedPosition) / _snapDuration;
+            _moveSpeed = (_targetNormalizedPosition - InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition)) / _snapDuration;
 
             // Update the target page variable to reflect the new target page.
             _targetPage = page;
