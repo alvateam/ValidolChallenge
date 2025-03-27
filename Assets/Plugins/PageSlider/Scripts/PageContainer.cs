@@ -32,6 +32,7 @@ namespace TS.PageSlider
         /// The assigned content is then parented to this container and its properties are set to ensure proper positioning and scaling.
         /// </summary>
         /// <param name="content">The RectTransform representing the content to be assigned.</param>
+        /// <param name="index"></param>
         public void AssignContent(RectTransform content)
         {
             if (content == null)

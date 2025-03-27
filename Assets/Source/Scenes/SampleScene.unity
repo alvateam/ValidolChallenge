@@ -232,6 +232,9 @@ GameObject:
   - component: {fileID: 398341270}
   - component: {fileID: 398341273}
   - component: {fileID: 398341274}
+  - component: {fileID: 398341275}
+  - component: {fileID: 398341277}
+  - component: {fileID: 398341276}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -268,10 +271,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _videoBootstrapper: {fileID: 7964655332340900366, guid: cce143a8b1d5017478c6aa6279a02792, type: 3}
   _container: {fileID: 299904109}
-  _videoDatas:
-  - {fileID: 11400000, guid: 959f11b8cecfab645be0540c1de34c98, type: 2}
-  - {fileID: 11400000, guid: 6e898f3820cb5784da166b4fb3540df4, type: 2}
   _pageSlider: {fileID: 2230961184096568824}
+  _pageScroller: {fileID: 2230961182756987739}
+  _jsonDownloader: {fileID: 398341277}
+  _videoDownloader: {fileID: 398341276}
 --- !u!114 &398341274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +289,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _videosFactory: {fileID: 398341273}
   _pageSlider: {fileID: 2230961184096568824}
+--- !u!114 &398341275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398341266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3224ed161eb556b4e9ed3a2eda55838c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &398341276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398341266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291e9cdca2d0eee4a88de504c181f4ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fileDownloader: {fileID: 398341275}
+--- !u!114 &398341277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398341266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ccdfa25bd1a194a9609e47eabaf5d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _googleDriveFileId: 1gfy2zH-AAKS-K8DhP1uDq5lnFDVAmEOn
+  _fileDownloader: {fileID: 398341275}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

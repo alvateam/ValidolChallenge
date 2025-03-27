@@ -13,20 +13,21 @@ public class VideoPlayerWrapper : MonoBehaviour
     [SerializeField] private VideoUIPresenter _videoUIPresenter;
     [SerializeField] private FilledProgressHandler _filledProgressHandler;
 
-    private VideoClip _loopedVideoClip;
-    private VideoClip _finalVideoClip;
+    private string _loopedVideoClipUrl;
+    private string _finalVideoClipUrl;
+    
     private Texture _placeholderTexture;
     private RenderTexture _renderTexture;
 
     public event Action FinalVideoStarted;
     public event Action FinalVideoFinished; 
 
-    public void Initialize(VideoClip loopedVideo, VideoClip finalVideo)
+    public void Initialize(string loopedVideo, string finalVideo)
     {
-        _loopedVideoClip = loopedVideo;
-        _finalVideoClip = finalVideo;
+        _loopedVideoClipUrl = loopedVideo;
+        _finalVideoClipUrl = finalVideo;
         
-        _videoPlayer.clip = _loopedVideoClip;
+        _videoPlayer.url = _loopedVideoClipUrl;
         _videoPlayer.sendFrameReadyEvents = true;
         
         _filledProgressHandler.Filled += OnFilled;
@@ -45,10 +46,7 @@ public class VideoPlayerWrapper : MonoBehaviour
     
     private void InitializeRenderTexture()
     {
-        int width = (int)_videoPlayer.clip.width;
-        int height = (int)_videoPlayer.clip.height;
-        
-        _renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32)
+        _renderTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32)
         {
             useMipMap = false,
             autoGenerateMips = false,
@@ -102,7 +100,7 @@ public class VideoPlayerWrapper : MonoBehaviour
         _rawImage.texture = _placeholderTexture;
         _videoPlayer.Stop();
         _videoPlayer.time = 0;
-        _videoPlayer.clip = _loopedVideoClip;
+        _videoPlayer.url = _loopedVideoClipUrl;
         _videoPlayer.Prepare();
         _videoPlayer.prepareCompleted += OnVideoPrepared;
     }
@@ -168,7 +166,7 @@ public class VideoPlayerWrapper : MonoBehaviour
     private void StartFinalVideoPlayback()
     {
         _videoPlayer.loopPointReached += OnFinalVideoFinished;
-        _videoPlayer.clip = _finalVideoClip;
+        _videoPlayer.url = _finalVideoClipUrl;
         FinalVideoStarted?.Invoke();
         _videoPlayer.Play();
         StartCoroutine(UpdateRawImageAfterDelay(RawImageAfterDelay));

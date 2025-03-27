@@ -1,5 +1,3 @@
-using Data;
-using TS.PageSlider;
 using UnityEngine;
 
 public class VideoBootstrapper : MonoBehaviour
@@ -15,10 +13,10 @@ public class VideoBootstrapper : MonoBehaviour
     public VideoPlayerWrapper VideoPlayerWrapper => _videoPlayer;
 
     public RectTransform RectTransform => _rectTransform;
-
-    public void Initialize(VideoData data, int videoNumber)
+    
+    public void Initialize(VideoJsonData data, string loopedVideo, string finalVideo, int videoNumber)
     {
-        _videoPlayer.Initialize(data.LoopedVideo, data.FinalVideo);
+        _videoPlayer.Initialize(loopedVideo, finalVideo);
         _filledProgressHandler.Initialize(data.EnergyGain, data.DifficultyMultiplier);
         _videoUIPresenter.Initialize(videoNumber);
         _gradeHandler.Initialize(data.IdealClicks);

@@ -3,6 +3,7 @@
     public enum VideoType
     {
         None = 0,
-        Transform = 1
+        Jump = 1,
+        Transform = 2
     }
 }

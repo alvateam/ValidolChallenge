@@ -1,0 +1,64 @@
+{
+  "videos": [
+    {
+      "Id": "1",
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 4,
+      "IdealClicks": 15,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoUrl": "https://drive.google.com/file/d/1VtLvF4myywyBRSUThUSAg17xxMy_iuob/view?usp=drive_link",
+      "FinalVideoUrl": "https://drive.google.com/file/d/1gd8qRBtP1Z-ldZcumdq8Am2CI1HTqN4R/view?usp=drive_link"
+    },
+    {
+      "Id": "2",
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 4.5,
+      "IdealClicks": 16,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoUrl": "https://drive.google.com/file/d/1dcwPQ3sDjx-q2rl_1cUOPvns6KQwts_I/view?usp=drive_link",
+      "FinalVideoUrl": "https://drive.google.com/file/d/1nCNFIa8gIBo2hMsulNc6jaXRQn5VO5Ro/view?usp=drive_link"
+    },
+    {
+      "Id": "3",
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 5,
+      "IdealClicks": 17,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoUrl": "https://drive.google.com/file/d/175mJr0azzkNwrUkgOyWV41seSvy2fe6H/view?usp=drive_link",
+      "FinalVideoUrl": "https://drive.google.com/file/d/1VhWXt5vl_N1HULEPp0ma565RcICl-qP8/view?usp=drive_link"
+    },
+    {
+      "Id": "4",
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 5.5,
+      "IdealClicks": 18,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoUrl": "https://drive.google.com/file/d/175mJr0azzkNwrUkgOyWV41seSvy2fe6H/view?usp=drive_link",
+      "FinalVideoUrl": "https://drive.google.com/file/d/1VhWXt5vl_N1HULEPp0ma565RcICl-qP8/view?usp=drive_link"
+    },
+    {
+      "Id": "5",
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 6,
+      "IdealClicks": 19,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoUrl": "https://drive.google.com/file/d/175mJr0azzkNwrUkgOyWV41seSvy2fe6H/view?usp=drive_link",
+      "FinalVideoUrl": "https://drive.google.com/file/d/1VhWXt5vl_N1HULEPp0ma565RcICl-qP8/view?usp=drive_link"
+    }
+  ]
+}

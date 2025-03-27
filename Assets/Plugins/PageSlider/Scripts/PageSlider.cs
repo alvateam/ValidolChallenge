@@ -230,6 +230,7 @@ namespace TS.PageSlider
                 EditorGUILayout.LabelField("Editor");
 
                 _contentPrefab = (RectTransform)EditorGUILayout.ObjectField(_contentPrefab, typeof(RectTransform), false);
+                
                 if (GUILayout.Button("Add Page"))
                 {
                     _target.AddPage((RectTransform)PrefabUtility.InstantiatePrefab(_contentPrefab));
