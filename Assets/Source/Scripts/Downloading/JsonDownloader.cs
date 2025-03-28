@@ -12,7 +12,7 @@ public class JsonDownloader : MonoBehaviour
     private IEnumerator Start()
     {
         string downloadUrl = GetGoogleDriveDownloadUrl(_googleDriveFileId);
-        yield return StartCoroutine(_fileDownloader.DownloadFile(downloadUrl, OnSuccess, OnError));
+        yield return StartCoroutine(_fileDownloader.DownloadFile(downloadUrl, onSuccess: OnSuccess, onError: OnError));
     }
 
     private string GetGoogleDriveDownloadUrl(string fileId) => 

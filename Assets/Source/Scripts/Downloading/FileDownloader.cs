@@ -7,7 +7,8 @@ using UnityEngine.Networking;
 
 public class FileDownloader : MonoBehaviour
 {
-    public IEnumerator DownloadFile(string fileURL, string downloadLocalPath, Action<string> onSuccess = null, Action<string> onError = null)
+    public IEnumerator DownloadFile(string fileURL, string downloadLocalPath = "", Action<string> onSuccess = null,
+        Action<string> onError = null)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(fileURL))
         {
@@ -21,33 +22,17 @@ public class FileDownloader : MonoBehaviour
             }
             else
             {
-                onSuccess?.Invoke(webRequest.downloadHandler.text);
                 // Сохраняем файл локально
-                File.WriteAllBytes(downloadLocalPath, webRequest.downloadHandler.data);
-            }
-        }
-    }
-    
-    public IEnumerator DownloadFile(string fileURL, Action<string> onSuccess = null, Action<string> onError = null)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(fileURL))
-        {
-            // Отправляем запрос
-            yield return webRequest.SendWebRequest();
-
-            // Проверяем ошибки
-            if (webRequest.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
-            {
-                onError?.Invoke(webRequest.error);
-            }
-            else
-            {
+                if (!string.IsNullOrEmpty(downloadLocalPath))
+                    File.WriteAllBytes(downloadLocalPath, webRequest.downloadHandler.data);
+                
                 onSuccess?.Invoke(webRequest.downloadHandler.text);
             }
         }
     }
-    
-    public async Task<string> DownloadFileAsync(string fileURL, string downloadLocalPath, Action<string> onSuccess = null, Action<string> onError = null)
+
+    public async Task<string> DownloadFileAsync(string fileURL, string downloadLocalPath = "",
+        Action<string> onSuccess = null, Action<string> onError = null)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(fileURL))
         {
@@ -66,17 +51,16 @@ public class FileDownloader : MonoBehaviour
                     onError?.Invoke(webRequest.error);
                     return string.Empty;
                 }
-                else
-                {
+
+                if (!string.IsNullOrEmpty(downloadLocalPath))
                     await File.WriteAllBytesAsync(downloadLocalPath, webRequest.downloadHandler.data);
-                    onSuccess?.Invoke(downloadLocalPath);
-                    return downloadLocalPath;
-                }
+                
+                onSuccess?.Invoke(downloadLocalPath);
+                return downloadLocalPath;
             }
             catch (Exception ex)
             {
-                // Обработка исключений
-                onError?.Invoke($"Произошла ошибка: {ex.Message}");
+                onError?.Invoke(ex.Message);
                 return string.Empty;
             }
         }
