@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Loading_indicator_circle.svg_0: -5638303198380606240
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
