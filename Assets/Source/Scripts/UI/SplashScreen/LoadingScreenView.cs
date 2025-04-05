@@ -3,7 +3,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
-public class SplashScreenView : MonoBehaviour
+public class LoadingScreenView : MonoBehaviour
 {
     private const float FadeDuration = 1f;
     
