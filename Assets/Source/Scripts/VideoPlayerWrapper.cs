@@ -67,6 +67,7 @@ public class VideoPlayerWrapper : MonoBehaviour
         {
             videoPlayer.frameReady -= OnFrameReady;
             _placeholderTexture = CreateTextureFromFrame(videoPlayer.targetTexture);
+            Debug.Log("Texture created" + gameObject.name);
             _rawImage.texture = _placeholderTexture;
             _videoPlayer.Stop();
         }

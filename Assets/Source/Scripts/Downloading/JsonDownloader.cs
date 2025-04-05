@@ -11,25 +11,16 @@ public class JsonDownloader : MonoBehaviour
     
     private IEnumerator Start()
     {
-        string downloadUrl = GetGoogleDriveDownloadUrl(_googleDriveFileId);
+        string downloadUrl = GoogleDriveLinkConverter.GetGoogleDriveDownloadUrl(_googleDriveFileId);
         yield return StartCoroutine(_fileDownloader.DownloadFile(downloadUrl, onSuccess: OnSuccess, onError: OnError));
     }
 
-    private string GetGoogleDriveDownloadUrl(string fileId) => 
-        $"https://drive.google.com/uc?export=download&id={fileId}";
-
-    private void OnError(string value)
-    {
-        Debug.LogError(value);
-    }
+    private void OnError(string value) => Debug.LogError(value);
 
     private void OnSuccess(string value)
     {
         VideoJsonWrapper videoDataWrapper = JsonUtility.FromJson<VideoJsonWrapper>(value);
-
-        if (videoDataWrapper is { videos: not null })
-            Downloaded?.Invoke(videoDataWrapper);
-        else
-            Debug.LogError("Failed to parse JSON or the 'videos' list is null.");
+        Debug.Log("Json download finished");
+        Downloaded?.Invoke(videoDataWrapper);
     }
 }

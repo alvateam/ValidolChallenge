@@ -9,6 +9,7 @@ public class VideoBootstrapper : MonoBehaviour
     [SerializeField] private GradeHandler _gradeHandler;
     [SerializeField] private TapsCounter _tapsCounter;
     
+    public VideoJsonData Data {get; private set;}
     public TapsCounter TapsCounter => _tapsCounter;
     public VideoPlayerWrapper VideoPlayerWrapper => _videoPlayer;
 
@@ -16,6 +17,7 @@ public class VideoBootstrapper : MonoBehaviour
     
     public void Initialize(VideoJsonData data, string loopedVideo, string finalVideo, int videoNumber)
     {
+        Data = data;
         _videoPlayer.Initialize(loopedVideo, finalVideo);
         _filledProgressHandler.Initialize(data.EnergyGain, data.DifficultyMultiplier);
         _videoUIPresenter.Initialize(videoNumber);

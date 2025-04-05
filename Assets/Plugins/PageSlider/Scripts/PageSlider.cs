@@ -76,6 +76,11 @@ namespace TS.PageSlider
             _scroller.SetPage(_startPageIndex);
         }
 
+        public void SetPage(int pageIndex)
+        {
+            _scroller.SetPage(pageIndex);
+        }
+
         public void SetScrollingAllow(bool value)
         {
            _scroller.SetScrollingAllow(value);

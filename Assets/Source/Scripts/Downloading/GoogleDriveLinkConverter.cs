@@ -23,6 +23,9 @@ public class GoogleDriveLinkConverter
 
         return directDownloadLink;
     }
+    
+    public static string GetGoogleDriveDownloadUrl(string fileId) => 
+        $"https://drive.google.com/uc?export=download&id={fileId}";
 
     /// <summary>
     /// Извлекает FILE_ID из ссылки Google Диска.

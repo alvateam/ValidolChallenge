@@ -11,18 +11,22 @@ public class VideoDownloader : MonoBehaviour
     public event Action<string> Success;
     public event Action<string> Error;
     
-    public async Task<string> DownloadVideoAsync(string url, VideoType videoType, string id)
+    public async Task<DownloadedVideo> DownloadVideoAsync(DownloadedVideo value)
     {
-        string downloadLink = GoogleDriveLinkConverter.ConvertToDirectDownloadLink(url);
-        string downloadLocalPath = GetDownloadLocalPath(videoType, id);
+        if(string.IsNullOrEmpty(value.Url))
+            throw new NullReferenceException();
+        
+        string downloadLink = GoogleDriveLinkConverter.GetGoogleDriveDownloadUrl(value.Url);
+        string downloadLocalPath = GetDownloadLocalPath(value.VideoType, value.Id);
         
         if (File.Exists(downloadLocalPath))
-            return downloadLocalPath;
+            return new DownloadedVideo(value.Id, value.VideoType, downloadLocalPath);
         
-        return await _fileDownloader.DownloadFileAsync(downloadLink, downloadLocalPath, OnSuccess, OnError);
+        string downloadFile = await _fileDownloader.DownloadFileAsync(downloadLink, downloadLocalPath, OnSuccess, OnError);
+        return new DownloadedVideo(value.Id, value.VideoType, downloadFile);
     }
 
-    private string GetDownloadLocalPath(VideoType videoType, string id)
+    private string GetDownloadLocalPath(VideoType videoType, int id)
     {
         string folderPath = Path.Combine(Application.persistentDataPath, "Videos");
         

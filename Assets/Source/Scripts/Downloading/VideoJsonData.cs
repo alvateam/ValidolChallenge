@@ -1,10 +1,11 @@
 using System;
 using Data;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class VideoJsonData
 {
-    public string Id;
+    public int Id;
     public VideoType LoopedVideoType;
     public VideoType FinalVideoType;
     public float EnergyGain;
@@ -12,6 +13,6 @@ public class VideoJsonData
     public int IdealClicks;
     public bool LockedByStarts;
     public int StarsToUnlock;
-    public string LoopedVideoUrl;
-    public string FinalVideoUrl;
+    public string LoopedVideoId;
+    public string FinalVideoId;
 }

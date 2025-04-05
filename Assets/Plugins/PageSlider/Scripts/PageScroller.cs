@@ -137,6 +137,9 @@ namespace TS.PageSlider
 
         public void SetPage(int index)
         {
+            if(_currentPage == index)
+                return;
+            
             _scrollRect.verticalNormalizedPosition = InvertNormalizedPosition(GetTargetPagePosition(index));
 
             _targetPage = index;

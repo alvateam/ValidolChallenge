@@ -1,64 +1,88 @@
 {
   "videos": [
     {
-      "Id": "1",
+      "Id": 1,
       "LoopedVideoType": 1,
       "FinalVideoType": 2,
       "EnergyGain": 10,
-      "DifficultyMultiplier": 4,
+      "DifficultyMultiplier": 0.1,
       "IdealClicks": 15,
       "LockedByStarts": false,
       "StarsToUnlock": 0,
-      "LoopedVideoUrl": "https://drive.google.com/file/d/1VtLvF4myywyBRSUThUSAg17xxMy_iuob/view?usp=drive_link",
-      "FinalVideoUrl": "https://drive.google.com/file/d/1gd8qRBtP1Z-ldZcumdq8Am2CI1HTqN4R/view?usp=drive_link"
+      "LoopedVideoId": "1VtLvF4myywyBRSUThUSAg17xxMy_iuob",
+      "FinalVideoId": "1gd8qRBtP1Z-ldZcumdq8Am2CI1HTqN4R"
     },
     {
-      "Id": "2",
+      "Id": 2,
       "LoopedVideoType": 1,
       "FinalVideoType": 2,
       "EnergyGain": 10,
-      "DifficultyMultiplier": 4.5,
+      "DifficultyMultiplier": 1.1,
       "IdealClicks": 16,
       "LockedByStarts": false,
       "StarsToUnlock": 0,
-      "LoopedVideoUrl": "https://drive.google.com/file/d/1dcwPQ3sDjx-q2rl_1cUOPvns6KQwts_I/view?usp=drive_link",
-      "FinalVideoUrl": "https://drive.google.com/file/d/1nCNFIa8gIBo2hMsulNc6jaXRQn5VO5Ro/view?usp=drive_link"
+      "LoopedVideoId": "1dcwPQ3sDjx-q2rl_1cUOPvns6KQwts_I",
+      "FinalVideoId": "1nCNFIa8gIBo2hMsulNc6jaXRQn5VO5Ro"
     },
     {
-      "Id": "3",
+      "Id": 3,
       "LoopedVideoType": 1,
       "FinalVideoType": 2,
       "EnergyGain": 10,
-      "DifficultyMultiplier": 5,
+      "DifficultyMultiplier": 1.2,
       "IdealClicks": 17,
       "LockedByStarts": false,
       "StarsToUnlock": 0,
-      "LoopedVideoUrl": "https://drive.google.com/file/d/1NvlRa-uab3aF1lR3IN2G09kqOXmyCjSw/view?usp=drive_link",
-      "FinalVideoUrl": "https://drive.google.com/file/d/1oYUifuoMEdd0ZdhBc9_-NO0MhH0yBgI2/view?usp=drive_link"
+      "LoopedVideoId": "1NvlRa-uab3aF1lR3IN2G09kqOXmyCjSw",
+      "FinalVideoId": "1oYUifuoMEdd0ZdhBc9_-NO0MhH0yBgI2"
     },
     {
-      "Id": "4",
+      "Id": 4,
       "LoopedVideoType": 1,
       "FinalVideoType": 2,
       "EnergyGain": 10,
-      "DifficultyMultiplier": 5.5,
+      "DifficultyMultiplier": 1.3,
       "IdealClicks": 18,
       "LockedByStarts": false,
       "StarsToUnlock": 0,
-      "LoopedVideoUrl": "https://drive.google.com/file/d/175mJr0azzkNwrUkgOyWV41seSvy2fe6H/view?usp=drive_link",
-      "FinalVideoUrl": "https://drive.google.com/file/d/1VhWXt5vl_N1HULEPp0ma565RcICl-qP8/view?usp=drive_link"
+      "LoopedVideoId": "175mJr0azzkNwrUkgOyWV41seSvy2fe6H",
+      "FinalVideoId": "1VhWXt5vl_N1HULEPp0ma565RcICl-qP8"
     },
     {
-      "Id": "5",
+      "Id": 5,
       "LoopedVideoType": 1,
       "FinalVideoType": 2,
       "EnergyGain": 10,
-      "DifficultyMultiplier": 6,
+      "DifficultyMultiplier": 1.4,
       "IdealClicks": 19,
       "LockedByStarts": false,
       "StarsToUnlock": 0,
-      "LoopedVideoUrl": "https://drive.google.com/file/d/18pmP20jq96_LEswCwwB8P-91LMY9X2WA/view?usp=drive_link",
-      "FinalVideoUrl": "https://drive.google.com/file/d/1Hpby_89kLpa3MKxV1lmXqyCTtWRWjg5h/view?usp=drive_link"
+      "LoopedVideoId": "18pmP20jq96_LEswCwwB8P-91LMY9X2WA",
+      "FinalVideoId": "1Hpby_89kLpa3MKxV1lmXqyCTtWRWjg5h"
+    },
+	{
+      "Id": 6,
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 1.5,
+      "IdealClicks": 20,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoId": "1gSF_nB_Idrsis5pyv7UWcLss_JdvG2EV",
+      "FinalVideoId": "1X9uJuK55LGMcqMoBFTCpo5TEIcC4F2wt"
+    },
+	{
+      "Id": 7,
+      "LoopedVideoType": 1,
+      "FinalVideoType": 2,
+      "EnergyGain": 10,
+      "DifficultyMultiplier": 1.6,
+      "IdealClicks": 21,
+      "LockedByStarts": false,
+      "StarsToUnlock": 0,
+      "LoopedVideoId": "1ueF8aAHDvHgtN_k3EQMgOGZwqzuc1Nuv",
+      "FinalVideoId": "1mng7V_46TMmNn7decvphhdY9wySarqMj"
     }
   ]
 }
