@@ -90,7 +90,7 @@ namespace TS.PageSlider
         /// The content argument specifies the RectTransform of the content to be displayed on the new page.
         /// </summary>
         /// <param name="content">The RectTransform of the content to be displayed on the new page.</param>
-        public void AddPage(RectTransform content)
+        public void AddPage(RectTransform content, int pageIndex = -1)
         {
             if (_scroller == null)
             {
@@ -104,6 +104,10 @@ namespace TS.PageSlider
             // Set the page's parent to the scroller's content transform.
             var page = new GameObject(string.Format("Page_{0}", _pages.Count), typeof(RectTransform), typeof(PageContainer));
             page.transform.SetParent(_scroller.Content);
+            if (pageIndex != -1)
+            {
+                page.transform.SetSiblingIndex(pageIndex);
+            }
 
             // Get the RectTransform component of the newly created page.
             // Set the size of the page's RectTransform to match the size of the scroller's viewport.

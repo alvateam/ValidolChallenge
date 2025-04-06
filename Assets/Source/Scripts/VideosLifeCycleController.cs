@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class VideosLifeCycleController : MonoBehaviour
 {
-    private const int DownloadedVideosCount = 3;
+    private const int DownloadedVideosCount = 2;
 
     [SerializeField] private JsonDownloader _jsonDownloader;
     [SerializeField] private VideosFactory _videosFactory;
@@ -17,7 +17,8 @@ public class VideosLifeCycleController : MonoBehaviour
 
     private List<VideoJsonData> _videoJsonDatas;
     private IReadOnlyList<VideoBootstrapper> _videoBootstrappers;
-    
+    private HashSet<int> _downloadedVideosIds;
+
     public event Action<int> CurrentVideoIndexChanged;
 
     private void OnEnable()
@@ -33,90 +34,145 @@ public class VideosLifeCycleController : MonoBehaviour
         int index = _videoBootstrappers
             .Select((x, idx) => new { x.Data.Id, Index = idx }) // Создаем проекцию с индексами
             .FirstOrDefault(x => x.Id == _currentVideoId)?.Index ?? -1;
-        
+
         SetCurrentVideoIndex(index);
     }
-
+    
     private void OnJsonDownloaded(VideoJsonWrapper value)
     {
         _videoJsonDatas = value.videos;
-        _currentVideoId = 4;
+        _currentVideoId = 4; // Пример текущего ID
 
-        var startLoadingVideoId = 0;
-        var endLoadingVideoId = _currentVideoId;
+        // Получаем начальный и конечный ID для загрузки
+        int startLoadingVideoId = GetStartLoadingVideoId(_currentVideoId);
+        int endLoadingVideoId = GetEndLoadingVideoId(_currentVideoId);
 
-        if (_currentVideoId > 1)
-        {
-            startLoadingVideoId = _currentVideoId - DownloadedVideosCount;
-            startLoadingVideoId = Mathf.Clamp(startLoadingVideoId, 1, _videoJsonDatas.Count);
-        }
-
-        if (endLoadingVideoId < _videoJsonDatas.Count)
-        {
-            endLoadingVideoId += DownloadedVideosCount;
-            endLoadingVideoId = Mathf.Clamp(endLoadingVideoId, endLoadingVideoId, _videoJsonDatas.Count);
-        }
-        
+        // Фильтруем видео в заданном диапазоне
         var downloadedVideos = _videoJsonDatas
-            .SkipWhile(x => x.Id != startLoadingVideoId)
-            .TakeWhile(x => x.Id <= endLoadingVideoId)
+            .Where(x => x.Id >= startLoadingVideoId && x.Id <= endLoadingVideoId)
             .ToList();
 
+        // Сохраняем ID скачанных видео
+        _downloadedVideosIds = new HashSet<int>(downloadedVideos.Select(x => x.Id));
+
+        // Создаем контейнеры для скачанных видео
         _videosFactory.CreateVideoContainers(downloadedVideos);
     }
+    
+    // Метод для получения начального ID (текущий - DownloadedVideosCount)
+    private int GetStartLoadingVideoId(int currentId)
+    {
+        // Ограничиваем минимальное значение до 1, так как ID начинаются с 1
+        return Mathf.Max(1, currentId - DownloadedVideosCount);
+    }
 
+// Метод для получения конечного ID (текущий + DownloadedVideosCount)
+    private int GetEndLoadingVideoId(int currentId)
+    {
+        // Ограничиваем максимальное значение количеством видео в коллекции
+        return Mathf.Min(currentId + DownloadedVideosCount, _videoJsonDatas.Count);
+    }
+    
     private void OnPageChangeEnded(int previous, int current)
     {
+        // Если текущий индекс совпадает с новым, ничего не делаем
         if (_currentVideoIndex == current)
             return;
 
         SetCurrentVideoIndex(current);
-        
+
         if (current > previous)
         {
-            _currentVideoId++;
-
-            var checkableIndex = _currentVideoIndex + DownloadedVideosCount - 1;
-            var lastDownloadedIndex = _videoBootstrappers.Count - 1;
-
-
-            // if(_currentVideoIndex == )
-
-            if (lastDownloadedIndex < _videoJsonDatas.Count - 1)
-            {
-                var downloadVideosCount = checkableIndex - lastDownloadedIndex;
-                var downloadedVideos = _videoJsonDatas
-                    .Skip(_videoBootstrappers.Count)
-                    .Take(downloadVideosCount)
-                    .ToList();
-
-                _videosFactory.CreateVideoContainers(downloadedVideos);
-            }
+            // Листаем вперёд: проверяем и скачиваем следующие видео
+            _currentVideoId = Mathf.Min(_currentVideoId + 1, _videoJsonDatas.Count);
+            HandleNextVideos();
         }
         else if (current < previous)
         {
-            _currentVideoId--;
-            if (current > DownloadedVideosCount - 1)
-            {
-                var checkableIndex = current - DownloadedVideosCount;
-                /*var lastDownloadedIndex = _videoBootstrappers.Count - 1;
-                if (lastDownloadedIndex < _videoJsonDatas.Count - 1)
-                {
-                    var downloadVideosCount = checkableIndex - lastDownloadedIndex;
-                    var downloadedVideos = _videoJsonDatas
-                        .Skip(_videoBootstrappers.Count)
-                        .Take(downloadVideosCount)
-                        .ToList();
-
-                    _videosFactory.CreateVideoContainers(downloadedVideos);
-                }*/
-            }
+            // Листаем назад: проверяем и скачиваем предыдущие видео
+            _currentVideoId = Mathf.Max(_currentVideoId - 1, 1);
+            HandlePreviousVideos();
         }
     }
+    
+    private void HandleNextVideos()
+    {
+        // Получаем диапазон id для проверки (текущий + следующие два)
+        var videoIdsToCheck = GetNextVideoIds();
 
+        // Фильтруем id, которые ещё не скачаны
+        var videoIdsToDownload = videoIdsToCheck
+            .Where(id => !_downloadedVideosIds.Contains(id))
+            .ToList();
+
+        DownloadVideosIfNeeded(videoIdsToDownload, false);
+    }
+    
+    private void HandlePreviousVideos()
+    {
+        // Получаем диапазон id для проверки (текущий - предыдущие два)
+        var videoIdsToCheck = GetPreviousVideoIds();
+
+        // Фильтруем id, которые ещё не скачаны
+        var videoIdsToDownload = videoIdsToCheck
+            .Where(id => !_downloadedVideosIds.Contains(id))
+            .ToList();
+
+        DownloadVideosIfNeeded(videoIdsToDownload, true);
+    }
+    
+    private void DownloadVideosIfNeeded(List<int> videoIdsToDownload, bool insertAtStart)
+    {
+        // Если нет видео для скачивания, выходим
+        if (!videoIdsToDownload.Any())
+            return;
+
+        // Находим соответствующие данные видео
+        var videosToDownload = _videoJsonDatas
+            .Where(video => videoIdsToDownload.Contains(video.Id))
+            .ToList();
+
+        // Если есть видео для создания контейнеров, создаём их
+        if (videosToDownload.Any())
+        {
+            _videosFactory.CreateVideoContainers(videosToDownload, insertAtStart);
+            AddDownloadedVideoIds(videoIdsToDownload);
+        }
+    }
+    
+    private void AddDownloadedVideoIds(List<int> newVideoIds)
+    {
+        foreach (var id in newVideoIds)
+        {
+            _downloadedVideosIds.Add(id);
+        }
+    }
+    
     private void SetCurrentVideoIndex(int current)
     {
         _currentVideoIndex = current;
         CurrentVideoIndexChanged?.Invoke(_currentVideoIndex);
+    }
+    
+    private List<int> GetNextVideoIds()
+    {
+        var nextIds = new List<int>();
+        for (int i = _currentVideoId + 1; i <= _currentVideoId + DownloadedVideosCount && i <= _videoJsonDatas.Count; i++)
+        {
+            nextIds.Add(i);
+        }
+        
+        return nextIds;
+    }
+    
+    private List<int> GetPreviousVideoIds()
+    {
+        var previousIds = new List<int>();
+        for (int i = _currentVideoId - 1; i >= _currentVideoId - DownloadedVideosCount && i >= 0; i--)
+        {
+            previousIds.Add(i);
+        }
+        
+        return previousIds;
     }
 }
