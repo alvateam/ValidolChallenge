@@ -15,12 +15,12 @@ public class VideoBootstrapper : MonoBehaviour
 
     public RectTransform RectTransform => _rectTransform;
     
-    public void Initialize(VideoJsonData data, string loopedVideo, string finalVideo, int videoNumber)
+    public void Initialize(VideoJsonData data, string loopedVideo, string finalVideo, int videoId)
     {
         Data = data;
         _videoPlayer.Initialize(loopedVideo, finalVideo);
         _filledProgressHandler.Initialize(data.EnergyGain, data.DifficultyMultiplier);
-        _videoUIPresenter.Initialize(videoNumber);
+        _videoUIPresenter.Initialize(videoId);
         _gradeHandler.Initialize(data.IdealClicks);
     }
 }

@@ -16,9 +16,9 @@ public class TapScreenView : MonoBehaviour
     
     public event Action Tapped;
     
-    public void Initialize(int videoNumber)
+    public void Initialize(int videoId)
     {
-        _nameText.text += $" {videoNumber}";
+        _nameText.text += $" {videoId}";
         SetTapsCount(0);
         UpdateFilledColor();
     }

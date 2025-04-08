@@ -14,7 +14,7 @@ public class VideoUIPresenter : MonoBehaviour, IDisposable
     public event Action RestartButtonClicked;
     public event Action Tapped;
     
-    public void Initialize(int videoNumber)
+    public void Initialize(int videoId)
     {
         _videoPlayer.FinalVideoFinished += OnFinalVideoFinished;
         
@@ -22,7 +22,7 @@ public class VideoUIPresenter : MonoBehaviour, IDisposable
         _finalScreenView.Initialize();
         
         _tapScreenView.Tapped += OnTapped;
-        _tapScreenView.Initialize(videoNumber);
+        _tapScreenView.Initialize(videoId);
         _tapScreenView.Display();
         
         _tapsCounter.Changed += OnTapsChanged;
