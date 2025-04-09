@@ -5,6 +5,7 @@ using UnityEngine.Video;
 
 public class VideoPlayerWrapper : MonoBehaviour
 {
+    private const float MaxPlayerPlaybackSpeed = 10;
     private const float RawImageAfterDelay = 0.1f;
     
     [SerializeField] private VideoPlayer _videoPlayer;
@@ -27,7 +28,7 @@ public class VideoPlayerWrapper : MonoBehaviour
         _loopedVideoClipUrl = loopedVideo;
         _finalVideoClipUrl = finalVideo;
         
-        _videoPlayer.url = _loopedVideoClipUrl;
+        _videoPlayer.url = _finalVideoClipUrl;
         _videoPlayer.sendFrameReadyEvents = true;
         
         _filledProgressHandler.Filled += OnFilled;
@@ -63,13 +64,13 @@ public class VideoPlayerWrapper : MonoBehaviour
 
     private void OnFrameReady(VideoPlayer videoPlayer, long frameIndex)
     {
-        if (frameIndex == 0 && _placeholderTexture == null)
+        if (frameIndex == 1 && _placeholderTexture == null)
         {
             videoPlayer.frameReady -= OnFrameReady;
             _placeholderTexture = CreateTextureFromFrame(videoPlayer.targetTexture);
-            Debug.Log("Texture created" + gameObject.name);
             _rawImage.texture = _placeholderTexture;
             _videoPlayer.Stop();
+            _videoPlayer.url = _loopedVideoClipUrl;
         }
     }
     
@@ -98,12 +99,30 @@ public class VideoPlayerWrapper : MonoBehaviour
 
     private void RestartVideo()
     {
+        if (_videoPlayer.isPlaying)
+        {
+            if (_videoPlayer.playbackSpeed < MaxPlayerPlaybackSpeed)
+            {
+                _videoPlayer.playbackSpeed = MaxPlayerPlaybackSpeed;
+                _videoPlayer.loopPointReached += OnRestartVideoPointReached;  
+            }
+        }
+        else
+        {
+            OnRestartVideoPointReached(_videoPlayer);
+        }
+    }
+
+    private void OnRestartVideoPointReached(VideoPlayer source)
+    {
+        _videoPlayer.playbackSpeed = 1;
+        _videoPlayer.loopPointReached -= OnRestartVideoPointReached;
         _rawImage.texture = _placeholderTexture;
-        _videoPlayer.Stop();
-        _videoPlayer.time = 0;
         _videoPlayer.url = _loopedVideoClipUrl;
         _videoPlayer.Prepare();
         _videoPlayer.prepareCompleted += OnVideoPrepared;
+        /*_videoPlayer.Stop();
+        _videoPlayer.time = 0;*/
     }
 
     private void OnVideoPrepared(VideoPlayer vp)
