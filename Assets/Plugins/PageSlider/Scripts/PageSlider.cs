@@ -190,6 +190,8 @@ namespace TS.PageSlider
             _pages[fromIndex].ChangeActiveState(false);
             _pages[toIndex].ChangeActiveState(true);
 
+            Debug.Log("From: " + fromIndex + " to " + toIndex);
+            
             if (_dotsIndicator != null)
             {
                 _dotsIndicator.ChangeActiveDot(fromIndex, toIndex);
