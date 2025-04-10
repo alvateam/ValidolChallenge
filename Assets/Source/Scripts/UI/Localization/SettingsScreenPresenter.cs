@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class LocalizationScreenPresenter : MonoBehaviour
+public class SettingsScreenPresenter : MonoBehaviour
 {
-    [SerializeField] private LocalizationScreenView _view;
+    [SerializeField] private SettingsScreenView _view;
     [SerializeField] private LocalizationSystem _localizationSystem;
 
     private void OnEnable()

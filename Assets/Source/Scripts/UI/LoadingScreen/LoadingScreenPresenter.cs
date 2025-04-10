@@ -9,10 +9,9 @@ public class LoadingScreenPresenter : MonoBehaviour
     [SerializeField] private LoadingScreenView _view;
     [SerializeField] private VideosFactory _videosFactory;
     [SerializeField] private PointerActionsHandler _pointerActionsHandler;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _clickAudioClip;
     [SerializeField] private Image _logoImage;
     [SerializeField] private Sprite _logoClickedSprite;
+    [SerializeField] private AudioService _audioService;
     
     [SerializeField] private Vector3 _logoScale = new(1.1f, 1.1f, 1.1f);
     [SerializeField] private float _logoScaleDuration = 0.2f;
@@ -30,7 +29,7 @@ public class LoadingScreenPresenter : MonoBehaviour
 
     private void OnPointerClicked()
     {
-        _audioSource.PlayOneShot(_clickAudioClip);
+        _audioService.PlayClick();
 
         if (_clickFirstPartTween != null)
         {
