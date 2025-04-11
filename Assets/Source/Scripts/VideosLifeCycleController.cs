@@ -13,7 +13,7 @@ public class VideosLifeCycleController : MonoBehaviour
     [SerializeField] private PageScroller _pageScroller;
 
     private int _currentVideoId;
-    private int _currentVideoIndex;
+    private int _currentVideoIndex = -1;
 
     private List<VideoJsonData> _videoJsonDatas;
     private IReadOnlyList<VideoBootstrapper> _videoBootstrappers;
@@ -25,10 +25,10 @@ public class VideosLifeCycleController : MonoBehaviour
     {
         _jsonDownloader.Downloaded += OnJsonDownloaded;
         _pageScroller.OnPageChangeEnded.AddListener(OnPageChangeEnded);
-        _videosFactory.VideoContainersCreated += OnVideosContainersCreated;
+        _videosFactory.VideoContainersCreated += OnStartVideosContainersCreated;
     }
 
-    private void OnVideosContainersCreated(IReadOnlyList<VideoBootstrapper> videoBootstrappers)
+    private void OnStartVideosContainersCreated(IReadOnlyList<VideoBootstrapper> videoBootstrappers)
     {
         _videoBootstrappers = videoBootstrappers;
         int index = _videoBootstrappers
@@ -36,6 +36,7 @@ public class VideosLifeCycleController : MonoBehaviour
             .FirstOrDefault(x => x.Id == _currentVideoId)?.Index ?? -1;
 
         SetCurrentVideoIndex(index);
+        _videoBootstrappers[_currentVideoIndex].VideoPlayerWrapper.RestartPlayer();
     }
     
     private void OnJsonDownloaded(VideoJsonWrapper value)
@@ -78,8 +79,12 @@ public class VideosLifeCycleController : MonoBehaviour
         // Если текущий индекс совпадает с новым, ничего не делаем
         if (_currentVideoIndex == current)
             return;
-
+        
+        _videoBootstrappers[_currentVideoIndex].VideoPlayerWrapper.StopPlayer();
+        
         SetCurrentVideoIndex(current);
+        
+        _videoBootstrappers[_currentVideoIndex].VideoPlayerWrapper.StartPlayer();
 
         if (current > previous)
         {
@@ -150,6 +155,7 @@ public class VideosLifeCycleController : MonoBehaviour
     
     private void SetCurrentVideoIndex(int current)
     {
+        Debug.Log($"Current index: {current}");
         _currentVideoIndex = current;
         CurrentVideoIndexChanged?.Invoke(_currentVideoIndex);
     }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TS.PageSlider;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class VideosFactory : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class VideosFactory : MonoBehaviour
     [SerializeField] private PageSlider _pageSlider;
     [SerializeField] private VideoDownloader _videoDownloader;
     [SerializeField] private AudioService _audioService;
+    [SerializeField] private VideoPlayer _videoPlayer;
 
     private List<VideoBootstrapper> _videoBootstrappers;
 
@@ -26,8 +28,6 @@ public class VideosFactory : MonoBehaviour
             VideoJsonData data = value[index];
             await CreateVideoContainer(data, insertAtStart);
         }
-
-        await UniTask.WaitForEndOfFrame();
 
         VideoContainersCreated?.Invoke(_videoBootstrappers);
     }
@@ -45,8 +45,10 @@ public class VideosFactory : MonoBehaviour
 
         VideoBootstrapper bootstrapper = Instantiate(_videoBootstrapper);
         bootstrapper.gameObject.name += "_" + videoId;
-        bootstrapper.Initialize(value, result[0].Url, result[1].Url, videoId, _audioService);
-
+        bootstrapper.Initialize(value, result[0].Url, result[1].Url, videoId, _audioService, _videoPlayer);
+        bootstrapper.VideoPlayerWrapper.Prepare();
+        await UniTask.WaitWhile(() => !bootstrapper.VideoPlayerWrapper.IsReady);
+        
         // Определяем siblingIndex для нового элемента
         int siblingIndex = insertAtStart ? 0 : _videoBootstrappers.Count;
 

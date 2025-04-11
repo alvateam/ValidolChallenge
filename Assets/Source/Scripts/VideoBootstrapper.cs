@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 public class VideoBootstrapper : MonoBehaviour
 {
@@ -17,10 +18,10 @@ public class VideoBootstrapper : MonoBehaviour
     public RectTransform RectTransform => _rectTransform;
     
     public void Initialize(VideoJsonData data, string loopedVideo, string finalVideo, int videoId,
-        AudioService audioService)
+        AudioService audioService, VideoPlayer videoPlayer)
     {
         Data = data;
-        _videoPlayer.Initialize(loopedVideo, finalVideo);
+        _videoPlayer.Initialize(loopedVideo, finalVideo, videoPlayer);
         _filledProgressHandler.Initialize(data.EnergyGain, data.DifficultyMultiplier);
         _videoUIPresenter.Initialize(videoId);
         _gradeHandler.Initialize(data.IdealClicks);

@@ -5,44 +5,70 @@ using UnityEngine.Video;
 
 public class VideoPlayerWrapper : MonoBehaviour
 {
+    private const float MinPlayerPlaybackSpeed = 1;
     private const float MaxPlayerPlaybackSpeed = 10;
     private const float RawImageAfterDelay = 0.1f;
     
-    [SerializeField] private VideoPlayer _videoPlayer;
     [SerializeField] private RawImage _rawImage;
-
     [SerializeField] private VideoUIPresenter _videoUIPresenter;
     [SerializeField] private FilledProgressHandler _filledProgressHandler;
 
+    private VideoPlayer _videoPlayer;
+    
     private string _loopedVideoClipUrl;
     private string _finalVideoClipUrl;
     
     private Texture _placeholderTexture;
     private RenderTexture _renderTexture;
 
+    public bool IsReady {get; private set;}
+    
     public event Action FinalVideoStarted;
     public event Action FinalVideoFinished; 
-
-    public void Initialize(string loopedVideo, string finalVideo)
+    
+    public void Initialize(string loopedVideo, string finalVideo, VideoPlayer videoPlayer)
     {
+        _videoPlayer = videoPlayer;
         _loopedVideoClipUrl = loopedVideo;
         _finalVideoClipUrl = finalVideo;
-        
-        _videoPlayer.url = _finalVideoClipUrl;
+    }
+
+    public void Prepare()
+    {
+        SetVideoPlayerUrl(_finalVideoClipUrl);
         _videoPlayer.sendFrameReadyEvents = true;
-        
-        _filledProgressHandler.Filled += OnFilled;
-        _videoUIPresenter.Tapped += OnTapped;
-        _videoUIPresenter.RestartButtonClicked += OnRestartButtonClicked;
         
         InitializeRenderTexture();
         
         _videoPlayer.targetTexture = _renderTexture;
-        _rawImage.texture = _renderTexture;
+        SetRawImageTexture(_renderTexture);
         
         _videoPlayer.frameReady += OnFrameReady;
         _videoPlayer.prepareCompleted += OnPrepareCompleted;
         _videoPlayer.Prepare();
+    }
+
+    public void RestartPlayer()
+    {
+        StopPlayer();
+        StartPlayer();
+    }
+    
+    public void StartPlayer()
+    {
+        _filledProgressHandler.Filled += OnFilled;
+        _videoUIPresenter.Tapped += OnTapped;
+        _videoUIPresenter.RestartButtonClicked += OnRestartButtonClicked;
+        
+        SetVideoPlayerUrl(_loopedVideoClipUrl);
+        _videoPlayer.targetTexture = _renderTexture;
+    }
+
+    public void StopPlayer()
+    {
+        _filledProgressHandler.Filled -= OnFilled;
+        _videoUIPresenter.Tapped -= OnTapped;
+        _videoUIPresenter.RestartButtonClicked -= OnRestartButtonClicked;
     }
     
     private void InitializeRenderTexture()
@@ -68,9 +94,9 @@ public class VideoPlayerWrapper : MonoBehaviour
         {
             videoPlayer.frameReady -= OnFrameReady;
             _placeholderTexture = CreateTextureFromFrame(videoPlayer.targetTexture);
-            _rawImage.texture = _placeholderTexture;
+            SetRawImageTexture(_placeholderTexture);
             _videoPlayer.Stop();
-            _videoPlayer.url = _loopedVideoClipUrl;
+            IsReady = true;
         }
     }
     
@@ -94,7 +120,7 @@ public class VideoPlayerWrapper : MonoBehaviour
     private System.Collections.IEnumerator UpdateRawImageAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        _rawImage.texture = _videoPlayer.targetTexture;
+        SetRawImageTexture(_videoPlayer.targetTexture);
     }
 
     private void RestartVideo()
@@ -103,7 +129,7 @@ public class VideoPlayerWrapper : MonoBehaviour
         {
             if (_videoPlayer.playbackSpeed < MaxPlayerPlaybackSpeed)
             {
-                _videoPlayer.playbackSpeed = MaxPlayerPlaybackSpeed;
+                SetPlaybackSpeed(MaxPlayerPlaybackSpeed);
                 _videoPlayer.loopPointReached += OnRestartVideoPointReached;  
             }
         }
@@ -115,14 +141,21 @@ public class VideoPlayerWrapper : MonoBehaviour
 
     private void OnRestartVideoPointReached(VideoPlayer source)
     {
-        _videoPlayer.playbackSpeed = 1;
+        SetPlaybackSpeed(MinPlayerPlaybackSpeed);
         _videoPlayer.loopPointReached -= OnRestartVideoPointReached;
-        _rawImage.texture = _placeholderTexture;
-        _videoPlayer.url = _loopedVideoClipUrl;
-        _videoPlayer.Prepare();
-        _videoPlayer.prepareCompleted += OnVideoPrepared;
-        /*_videoPlayer.Stop();
-        _videoPlayer.time = 0;*/
+        SetRawImageTexture(_placeholderTexture);
+        
+        SetVideoPlayerUrl(_loopedVideoClipUrl);
+        
+        if (_videoPlayer.isPrepared)
+        {
+            OnVideoPrepared(_videoPlayer);
+        }
+        else
+        {
+            _videoPlayer.prepareCompleted += OnVideoPrepared;
+            _videoPlayer.Prepare(); 
+        }
     }
 
     private void OnVideoPrepared(VideoPlayer vp)
@@ -186,11 +219,13 @@ public class VideoPlayerWrapper : MonoBehaviour
     private void StartFinalVideoPlayback()
     {
         _videoPlayer.loopPointReached += OnFinalVideoFinished;
-        _videoPlayer.url = _finalVideoClipUrl;
+        SetVideoPlayerUrl(_finalVideoClipUrl);
         FinalVideoStarted?.Invoke();
         _videoPlayer.Play();
         StartCoroutine(UpdateRawImageAfterDelay(RawImageAfterDelay));
     }
+
+    private void SetVideoPlayerUrl(string url) => _videoPlayer.url = url;
 
     private void OnFinalVideoFinished(VideoPlayer source)
     {
@@ -200,10 +235,43 @@ public class VideoPlayerWrapper : MonoBehaviour
 
     private void OnTapped()
     {
-        if (_placeholderTexture != null) 
-            RestartVideo();
+        if (_placeholderTexture != null)
+        {
+            if (_videoPlayer.isPlaying)
+            {
+                if (_videoPlayer.playbackSpeed < MaxPlayerPlaybackSpeed)
+                {
+                    SetPlaybackSpeed(MaxPlayerPlaybackSpeed);
+                    _videoPlayer.loopPointReached += OnTappedVideoPointReached;  
+                }
+            }
+            else
+            {
+                OnTappedVideoPointReached(_videoPlayer);
+            }
+        }
+    }
+
+    private void OnTappedVideoPointReached(VideoPlayer videoPlayer)
+    {
+        SetPlaybackSpeed(MinPlayerPlaybackSpeed);
+        _videoPlayer.loopPointReached -= OnTappedVideoPointReached;
+        SetRawImageTexture(_placeholderTexture);
+        
+        if (_videoPlayer.isPrepared)
+        {
+            OnVideoPrepared(_videoPlayer);
+        }
+        else
+        {
+            _videoPlayer.prepareCompleted += OnVideoPrepared;
+            _videoPlayer.Prepare();
+        }
     }
     
+    private void SetPlaybackSpeed(float value) => _videoPlayer.playbackSpeed = value;
+    private void SetRawImageTexture(Texture value) => _rawImage.texture = value;
+
     private void OnDestroy()
     {
         if (_placeholderTexture != null) 
@@ -211,5 +279,7 @@ public class VideoPlayerWrapper : MonoBehaviour
         
         if (_renderTexture != null) 
             _renderTexture.Release();
+        
+        SetRawImageTexture(null);
     }
 }
