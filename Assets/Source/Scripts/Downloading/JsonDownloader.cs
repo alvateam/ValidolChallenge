@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class JsonDownloader : MonoBehaviour
@@ -9,10 +9,10 @@ public class JsonDownloader : MonoBehaviour
 
     public event Action<VideoJsonWrapper> Downloaded;
     
-    private IEnumerator Start()
+    public async void Download()
     {
         string downloadUrl = GoogleDriveLinkConverter.GetGoogleDriveDownloadUrl(_googleDriveFileId);
-        yield return StartCoroutine(_fileDownloader.DownloadFile(downloadUrl, onSuccess: OnSuccess, onError: OnError));
+        await _fileDownloader.DownloadFile(downloadUrl, onSuccess: OnSuccess, onError: OnError);
     }
 
     private void OnError(string value) => Debug.LogError(value);

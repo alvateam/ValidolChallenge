@@ -11,6 +11,7 @@ public class VideosLifeCycleController : MonoBehaviour
     [SerializeField] private JsonDownloader _jsonDownloader;
     [SerializeField] private VideosFactory _videosFactory;
     [SerializeField] private PageScroller _pageScroller;
+    [SerializeField] private SaveService _saveService;
 
     private int _currentVideoId;
     private int _currentVideoIndex = -1;
@@ -18,6 +19,8 @@ public class VideosLifeCycleController : MonoBehaviour
     private List<VideoJsonData> _videoJsonDatas;
     private IReadOnlyList<VideoBootstrapper> _videoBootstrappers;
     private HashSet<int> _downloadedVideosIds;
+
+    private SaveData SaveData => _saveService.SaveData;
 
     public event Action<int> CurrentVideoIndexChanged;
 
@@ -42,7 +45,7 @@ public class VideosLifeCycleController : MonoBehaviour
     private void OnJsonDownloaded(VideoJsonWrapper value)
     {
         _videoJsonDatas = value.videos;
-        _currentVideoId = 4; // Пример текущего ID
+        SetCurrentVideoId(SaveData.VideoId);
 
         // Получаем начальный и конечный ID для загрузки
         int startLoadingVideoId = GetStartLoadingVideoId(_currentVideoId);
@@ -89,17 +92,27 @@ public class VideosLifeCycleController : MonoBehaviour
         if (current > previous)
         {
             // Листаем вперёд: проверяем и скачиваем следующие видео
-            _currentVideoId = Mathf.Min(_currentVideoId + 1, _videoJsonDatas.Count);
+            int currentVideoId = Mathf.Min(_currentVideoId + 1, _videoJsonDatas.Count);
+            SetCurrentVideoId(currentVideoId);
+            UpdateSavedData();
             HandleNextVideos();
         }
         else if (current < previous)
         {
             // Листаем назад: проверяем и скачиваем предыдущие видео
-            _currentVideoId = Mathf.Max(_currentVideoId - 1, 1);
+            var currentVideoId = Mathf.Max(_currentVideoId - 1, 1);
+            SetCurrentVideoId(currentVideoId);
+            UpdateSavedData();
             HandlePreviousVideos();
         }
     }
-    
+
+    private void UpdateSavedData()
+    {
+        SaveData.VideoId = _currentVideoId;
+        _saveService.Save();
+    }
+
     private void HandleNextVideos()
     {
         // Получаем диапазон id для проверки (текущий + следующие два)
@@ -181,4 +194,6 @@ public class VideosLifeCycleController : MonoBehaviour
         
         return previousIds;
     }
+
+    private void SetCurrentVideoId(int value) => _currentVideoId = value;
 }

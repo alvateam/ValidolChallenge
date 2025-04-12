@@ -127,9 +127,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 299904109}
     m_Modifications:
+    - target: {fileID: 1847415154062823771, guid: f06ef390165c48248ba0bfce39756522, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847415154062823771, guid: f06ef390165c48248ba0bfce39756522, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847415154062823771, guid: f06ef390165c48248ba0bfce39756522, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847415154062823771, guid: f06ef390165c48248ba0bfce39756522, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2278078590310329326, guid: f06ef390165c48248ba0bfce39756522, type: 3}
       propertyPath: m_Name
       value: LoadingScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3003453033982201014, guid: f06ef390165c48248ba0bfce39756522, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.4471436
+      objectReference: {fileID: 0}
+    - target: {fileID: 3003453033982201014, guid: f06ef390165c48248ba0bfce39756522, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.70581055
       objectReference: {fileID: 0}
     - target: {fileID: 5841001868451664845, guid: f06ef390165c48248ba0bfce39756522, type: 3}
       propertyPath: _audioService
@@ -281,7 +305,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1080, y: 1920}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -349,6 +373,8 @@ GameObject:
   - component: {fileID: 398341276}
   - component: {fileID: 398341278}
   - component: {fileID: 398341279}
+  - component: {fileID: 398341281}
+  - component: {fileID: 398341280}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -457,6 +483,7 @@ MonoBehaviour:
   _jsonDownloader: {fileID: 398341277}
   _videosFactory: {fileID: 398341273}
   _pageScroller: {fileID: 2230961182756987739}
+  _saveService: {fileID: 398341281}
 --- !u!114 &398341279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,6 +496,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b7ad71b853ce64a84f876cbf3f2bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &398341280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398341266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d22011f59bef884386144fca7b9285d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jsonDownloader: {fileID: 398341277}
+  _saveService: {fileID: 398341281}
+--- !u!114 &398341281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398341266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 275bbe0dee1dbff4b8da3f3978eb1dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SaveData:
+    VideoId: 1
 --- !u!224 &516366999 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8579424657673632861, guid: 1620e3e87543b9e4d9170d954f346c59, type: 3}
@@ -1323,6 +1378,10 @@ PrefabInstance:
     - target: {fileID: 355453369628228488, guid: e256ac3aa7a8e6f4d8ab0183ed7cce49, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 355453369628228488, guid: e256ac3aa7a8e6f4d8ab0183ed7cce49, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 1773649060187738235, guid: e256ac3aa7a8e6f4d8ab0183ed7cce49, type: 3}
       propertyPath: m_Name
