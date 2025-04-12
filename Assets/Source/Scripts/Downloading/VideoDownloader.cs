@@ -8,25 +8,33 @@ public class VideoDownloader : MonoBehaviour
 {
     [SerializeField] private FileDownloader _fileDownloader;
     
-    public event Action<string> Success;
-    public event Action<string> Error;
-    
     public async Task<DownloadedVideo> DownloadVideoAsync(DownloadedVideo value)
     {
         if(string.IsNullOrEmpty(value.Url))
             throw new NullReferenceException();
         
+        string path = GetResourcesPath(value.VideoType, value.Id);
+        
+        if (File.Exists(path))
+            return new DownloadedVideo(value.Id, value.VideoType, "file://" + path);
+        
+        path = GetPreloadedPath(value.VideoType, value.Id);
+        
+        if (File.Exists(path))
+            return new DownloadedVideo(value.Id, value.VideoType, path);
+        
         string downloadLink = GoogleDriveLinkConverter.GetGoogleDriveDownloadUrl(value.Url);
-        string downloadLocalPath = GetDownloadLocalPath(value.VideoType, value.Id);
-        
-        if (File.Exists(downloadLocalPath))
-            return new DownloadedVideo(value.Id, value.VideoType, downloadLocalPath);
-        
-        string downloadFile = await _fileDownloader.DownloadFileAsync(downloadLink, downloadLocalPath, OnSuccess, OnError);
+        string downloadFile = await _fileDownloader.DownloadFileAsync(downloadLink, path);
         return new DownloadedVideo(value.Id, value.VideoType, downloadFile);
     }
 
-    private string GetDownloadLocalPath(VideoType videoType, int id)
+    private string GetResourcesPath(VideoType videoType, int id)
+    {
+        string videoFileName = $"{videoType}_{id}.mp4";
+        return Path.Combine(Application.dataPath, "Source/Resources/Videos", videoFileName);
+    }
+    
+    private string GetPreloadedPath(VideoType videoType, int id)
     {
         string folderPath = Path.Combine(Application.persistentDataPath, "Videos");
         
@@ -43,7 +51,4 @@ public class VideoDownloader : MonoBehaviour
             Debug.Log($"Folder created: {folderPath}");
         }
     }
-
-    private void OnError(string value) => Error?.Invoke(value);
-    private void OnSuccess(string value) => Success?.Invoke(value);
 }
