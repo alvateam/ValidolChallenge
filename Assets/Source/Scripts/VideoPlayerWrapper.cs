@@ -12,6 +12,7 @@ public class VideoPlayerWrapper : MonoBehaviour
     [SerializeField] private RawImage _rawImage;
     [SerializeField] private VideoUIPresenter _videoUIPresenter;
     [SerializeField] private FilledProgressHandler _filledProgressHandler;
+    [SerializeField] private AspectRatioFitter _aspectRatioFitter;
 
     private VideoPlayer _videoPlayer;
     
@@ -73,7 +74,9 @@ public class VideoPlayerWrapper : MonoBehaviour
     
     private void InitializeRenderTexture()
     {
-        _renderTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32)
+        int textureWidth = Mathf.RoundToInt(StandartScreenResolution.Height / StandartScreenResolution.Width * Screen.height);
+        
+        _renderTexture = new RenderTexture(textureWidth, Screen.height, 24, RenderTextureFormat.ARGB32)
         {
             useMipMap = false,
             autoGenerateMips = false,
@@ -276,9 +279,12 @@ public class VideoPlayerWrapper : MonoBehaviour
     {
         if (_placeholderTexture != null) 
             Destroy(_placeholderTexture);
-        
-        if (_renderTexture != null) 
+
+        if (_renderTexture != null)
+        {
             _renderTexture.Release();
+            Destroy(_renderTexture);
+        }
         
         SetRawImageTexture(null);
     }
