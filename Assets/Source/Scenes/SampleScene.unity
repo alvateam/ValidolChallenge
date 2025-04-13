@@ -1177,11 +1177,11 @@ VideoPlayer:
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
-  m_AspectRatio: 2
+  m_AspectRatio: 1
   m_DataSource: 0
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -1381,7 +1381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 355453369628228488, guid: e256ac3aa7a8e6f4d8ab0183ed7cce49, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00024414062
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1773649060187738235, guid: e256ac3aa7a8e6f4d8ab0183ed7cce49, type: 3}
       propertyPath: m_Name

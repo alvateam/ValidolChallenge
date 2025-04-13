@@ -74,9 +74,7 @@ public class VideoPlayerWrapper : MonoBehaviour
     
     private void InitializeRenderTexture()
     {
-        int textureWidth = Mathf.RoundToInt(StandartScreenResolution.Height / StandartScreenResolution.Width * Screen.height);
-        
-        _renderTexture = new RenderTexture(textureWidth, Screen.height, 24, RenderTextureFormat.ARGB32)
+        _renderTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32)
         {
             useMipMap = false,
             autoGenerateMips = false,
