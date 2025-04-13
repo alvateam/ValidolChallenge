@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 
-public class SettingsScreenPresenter : MonoBehaviour
+namespace Source.Scripts.UI.Localization
 {
-    [SerializeField] private SettingsScreenView _view;
-    [SerializeField] private LocalizationSystem _localizationSystem;
-
-    private void OnEnable()
+    public class SettingsScreenPresenter : MonoBehaviour
     {
-        _view.LocalesChanged += OnLocaleChanged;
-    }
+        [SerializeField] private SettingsScreenView _view;
+        [SerializeField] private LocalizationSystem _localizationSystem;
 
-    private void OnDisable()
-    {
-        _view.LocalesChanged -= OnLocaleChanged;
-    }
+        private void OnEnable()
+        {
+            _view.LocalesChanged += OnLocaleChanged;
+        }
+
+        private void OnDisable()
+        {
+            _view.LocalesChanged -= OnLocaleChanged;
+        }
     
-    private void OnLocaleChanged(int id)
-    {
-        _localizationSystem.SetLocale(id);
+        private void OnLocaleChanged(int id)
+        {
+            _localizationSystem.SetLocale(id);
+        }
     }
 }

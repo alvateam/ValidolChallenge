@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class GradeView : MonoBehaviour
+namespace Source.Scripts.UI
 {
-    [SerializeField] private GameObject _filledGrade;
-
-    public void ShowGrade()
+    public class GradeView : MonoBehaviour
     {
-        _filledGrade.SetActive(true);
-    }
+        [SerializeField] private GameObject _filledGrade;
 
-    public void HideGrade()
-    {
-        _filledGrade.SetActive(false);
+        public void ShowGrade()
+        {
+            _filledGrade.SetActive(true);
+        }
+
+        public void HideGrade()
+        {
+            _filledGrade.SetActive(false);
+        }
     }
 }

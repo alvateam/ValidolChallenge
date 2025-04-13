@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
 
-namespace Data
+namespace Source.Scripts.Data
 {
     [CreateAssetMenu(fileName = "Static Data", menuName = "VideoData", order = 0)]
     public class VideoData : ScriptableObject

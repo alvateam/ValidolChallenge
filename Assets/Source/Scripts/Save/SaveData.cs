@@ -1,12 +1,15 @@
 ﻿using System;
 
-[Serializable]
-public class SaveData
+namespace Source.Scripts.Save
 {
-    public int VideoId;
-
-    public SaveData()
+    [Serializable]
+    public class SaveData
     {
-        VideoId = 1;
+        public int VideoId;
+
+        public SaveData()
+        {
+            VideoId = 1;
+        }
     }
 }

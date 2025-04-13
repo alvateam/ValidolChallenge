@@ -1,55 +1,58 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TikTokScroll : MonoBehaviour
+namespace Source.Scripts
 {
-    public ScrollRect scrollRect; // Ссылка на ScrollRect
-    public float snapSpeed = 8f;  // Скорость защелкивания
-    public float[] pagePositions; // Массив позиций для каждого элемента
-
-    private int currentPage = 0;  // Текущая страница
-    private bool isScrolling = false; // Флаг для отслеживания прокрутки
-
-    void Update()
+    public class TikTokScroll : MonoBehaviour
     {
-        if (!isScrolling)
-        {
-            // Интерполируем позицию ScrollRect к ближайшей странице
-            scrollRect.verticalNormalizedPosition = Mathf.Lerp(
-                scrollRect.verticalNormalizedPosition,
-                pagePositions[currentPage],
-                Time.deltaTime * snapSpeed
-            );
-        }
-    }
+        public ScrollRect scrollRect; // Ссылка на ScrollRect
+        public float snapSpeed = 8f;  // Скорость защелкивания
+        public float[] pagePositions; // Массив позиций для каждого элемента
 
-    public void OnDragEnd()
-    {
-        // Определяем ближайшую страницу после окончания прокрутки
-        float closestPosition = Mathf.Infinity;
-        int newPage = currentPage;
+        private int currentPage = 0;  // Текущая страница
+        private bool isScrolling = false; // Флаг для отслеживания прокрутки
 
-        for (int i = 0; i < pagePositions.Length; i++)
+        void Update()
         {
-            float distance = Mathf.Abs(scrollRect.verticalNormalizedPosition - pagePositions[i]);
-            if (distance < closestPosition)
+            if (!isScrolling)
             {
-                closestPosition = distance;
-                newPage = i;
+                // Интерполируем позицию ScrollRect к ближайшей странице
+                scrollRect.verticalNormalizedPosition = Mathf.Lerp(
+                    scrollRect.verticalNormalizedPosition,
+                    pagePositions[currentPage],
+                    Time.deltaTime * snapSpeed
+                );
             }
         }
 
-        currentPage = newPage; // Обновляем текущую страницу
-    }
+        public void OnDragEnd()
+        {
+            // Определяем ближайшую страницу после окончания прокрутки
+            float closestPosition = Mathf.Infinity;
+            int newPage = currentPage;
 
-    public void OnScrollStart()
-    {
-        isScrolling = true; // Пользователь начал прокручивать
-    }
+            for (int i = 0; i < pagePositions.Length; i++)
+            {
+                float distance = Mathf.Abs(scrollRect.verticalNormalizedPosition - pagePositions[i]);
+                if (distance < closestPosition)
+                {
+                    closestPosition = distance;
+                    newPage = i;
+                }
+            }
 
-    public void OnScrollEnd()
-    {
-        isScrolling = false; // Пользователь закончил прокручивать
-        OnDragEnd();         // Вызываем метод для защелкивания
+            currentPage = newPage; // Обновляем текущую страницу
+        }
+
+        public void OnScrollStart()
+        {
+            isScrolling = true; // Пользователь начал прокручивать
+        }
+
+        public void OnScrollEnd()
+        {
+            isScrolling = false; // Пользователь закончил прокручивать
+            OnDragEnd();         // Вызываем метод для защелкивания
+        }
     }
 }

@@ -2,12 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PointerActionsHandler : MonoBehaviour, IPointerClickHandler
+namespace Source.Scripts
 {
-    public event Action Clicked;
-
-    public void OnPointerClick(PointerEventData eventData)
+    public class PointerActionsHandler : MonoBehaviour, IPointerClickHandler
     {
-        Clicked?.Invoke();
+        public event Action Clicked;
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Clicked?.Invoke();
+        }
     }
 }

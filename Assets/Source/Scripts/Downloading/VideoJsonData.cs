@@ -1,18 +1,20 @@
 using System;
-using Data;
-using UnityEngine.Serialization;
+using Source.Scripts.Data;
 
-[Serializable]
-public class VideoJsonData
+namespace Source.Scripts.Downloading
 {
-    public int Id;
-    public VideoType LoopedVideoType;
-    public VideoType FinalVideoType;
-    public float EnergyGain;
-    public float DifficultyMultiplier;
-    public int IdealClicks;
-    public bool LockedByStarts;
-    public int StarsToUnlock;
-    public string LoopedVideoId;
-    public string FinalVideoId;
+    [Serializable]
+    public class VideoJsonData
+    {
+        public int Id;
+        public VideoType LoopedVideoType;
+        public VideoType FinalVideoType;
+        public float EnergyGain;
+        public float DifficultyMultiplier;
+        public int IdealClicks;
+        public bool LockedByStarts;
+        public int StarsToUnlock;
+        public string LoopedVideoId;
+        public string FinalVideoId;
+    }
 }

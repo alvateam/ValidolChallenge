@@ -1,4 +1,4 @@
-﻿namespace Data
+﻿namespace Source.Scripts.Data
 {
     public enum VideoType
     {

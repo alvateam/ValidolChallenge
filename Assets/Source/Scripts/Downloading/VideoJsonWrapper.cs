@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-[Serializable]
-public class VideoJsonWrapper
+namespace Source.Scripts.Downloading
 {
-    public List<VideoJsonData> videos;
+    [Serializable]
+    public class VideoJsonWrapper
+    {
+        public List<VideoJsonData> videos;
+    }
 }

@@ -1,26 +1,30 @@
+using Source.Scripts.UI;
 using UnityEngine;
 
-public class VideoAudioController : MonoBehaviour
+namespace Source.Scripts
 {
-    [SerializeField] private VideoUIPresenter _videoUIPresenter;
-    [SerializeField] private VideoPlayerWrapper _videoPlayerWrapper;
+    public class VideoAudioController : MonoBehaviour
+    {
+        [SerializeField] private VideoUIPresenter _videoUIPresenter;
+        [SerializeField] private VideoPlayerWrapper _videoPlayerWrapper;
     
-    private AudioService _audioService;
+        private AudioService _audioService;
 
-    public void Initialize(AudioService audioService)
-    {
-        _audioService = audioService;
-        _videoUIPresenter.Tapped += OnTapped;
-        _videoPlayerWrapper.FinalVideoStarted += OnFinalVideoStarted;
-    }
+        public void Initialize(AudioService audioService)
+        {
+            _audioService = audioService;
+            _videoUIPresenter.Tapped += OnTapped;
+            _videoPlayerWrapper.FinalVideoStarted += OnFinalVideoStarted;
+        }
 
-    private void OnFinalVideoStarted()
-    {
-        _audioService.PlayFilled();
-    }
+        private void OnFinalVideoStarted()
+        {
+            _audioService.PlayFilled();
+        }
 
-    private void OnTapped()
-    {
-        _audioService.PlayClick();
+        private void OnTapped()
+        {
+            _audioService.PlayClick();
+        }
     }
 }
