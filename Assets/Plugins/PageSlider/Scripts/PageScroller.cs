@@ -1,8 +1,10 @@
 #region Includes
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 #endregion
 
 namespace TS.PageSlider
@@ -16,21 +18,20 @@ namespace TS.PageSlider
         #region Variables
 
         [Header("Configuration")]
-
         /// <summary>
         /// Minimum delta drag required to consider a page change (normalized value between 0 and 1).
         /// </summary>
         [Tooltip("Minimum delta drag required to consider a page change (normalized value between 0 and 1)")]
-        [SerializeField] private float _minDeltaDrag = 0.1f;
+        [SerializeField]
+        private float _minDeltaDrag = 0.1f;
 
         /// <summary>
         /// Duration (in seconds) for the page snapping animation.
         /// </summary>
-        [Tooltip("Duration (in seconds) for the page snapping animation")]
-        [SerializeField] private float _snapDuration = 0.3f;
+        [Tooltip("Duration (in seconds) for the page snapping animation")] [SerializeField]
+        private float _snapDuration = 0.3f;
 
         [Header("Events")]
-
         /// <summary>
         /// Event triggered when a page change starts. 
         /// The event arguments are the index of the current page and the index of the target page.
@@ -78,7 +79,7 @@ namespace TS.PageSlider
                 return _scrollRect.content;
             }
         }
-        
+
         private ScrollRect _scrollRect;
 
         private int _currentPage; // Index of the currently active page.
@@ -94,10 +95,14 @@ namespace TS.PageSlider
         {
             _scrollRect = FindScrollRect();
         }
+
         private void Update()
         {
             // If there's no movement in progress (moveSpeed is 0), exit the function early.
-            if (_moveSpeed == 0) { return; }
+            if (_moveSpeed == 0)
+            {
+                return;
+            }
 
             // Get the current normalized position of the scroll rect (between 0 and 1).
             // Update the current position based on the move speed and deltaTime.
@@ -137,14 +142,16 @@ namespace TS.PageSlider
 
         public void SetPage(int index)
         {
-            if(_currentPage == index)
+            if (_currentPage == index)
                 return;
-            
+
             _scrollRect.verticalNormalizedPosition = InvertNormalizedPosition(GetTargetPagePosition(index));
 
-            _targetPage = index;
+            var tempCurrentPage = _currentPage;
             _currentPage = index;
-            OnPageChangeEnded?.Invoke(0, _currentPage);
+            _targetPage = index;
+            
+            OnPageChangeEnded?.Invoke(tempCurrentPage, _targetPage);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -172,6 +179,7 @@ namespace TS.PageSlider
             // This is necessary because a drag interaction might interrupt an ongoing page change animation.
             _moveSpeed = 0;
         }
+
         public void OnEndDrag(PointerEventData eventData)
         {
             // Calculate the width of a single page (normalized value between 0 and 1).
@@ -192,7 +200,8 @@ namespace TS.PageSlider
             // Check if the drag direction is forward or backward.
             // This is determined by comparing the current position with the starting position.
             // A higher current position indicates a forward drag.
-            var isForwardDrag = InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition) > _startNormalizedPosition;
+            var isForwardDrag = InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition) >
+                                _startNormalizedPosition;
 
             // Calculate the normalized position where a page change should occur (switchPageBreakpoint).
             // This is calculated by adding (for forward drag) or subtracting (for backward drag) 
@@ -222,7 +231,7 @@ namespace TS.PageSlider
         {
             return 1f - value;
         }
-        
+
         /// <summary>
         /// This function handles initiating a page change animation based on a target page index 
         /// during a scroll interaction. It calculates the target scroll position, determines if a page change 
@@ -235,7 +244,9 @@ namespace TS.PageSlider
             _targetNormalizedPosition = GetTargetPagePosition(page);
 
             // Calculate the speed required to reach the target position within the snap duration.
-            _moveSpeed = (_targetNormalizedPosition - InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition)) / _snapDuration;
+            _moveSpeed =
+                (_targetNormalizedPosition - InvertNormalizedPosition(_scrollRect.verticalNormalizedPosition)) /
+                _snapDuration;
 
             // Update the target page variable to reflect the new target page.
             _targetPage = page;

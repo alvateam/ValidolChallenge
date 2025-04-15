@@ -52,7 +52,7 @@ namespace Source.Scripts
             bootstrapper.Initialize(value, result[0].Url, result[1].Url, videoId, _audioService, _videoPlayer);
             bootstrapper.VideoPlayerWrapper.Prepare();
             await UniTask.WaitWhile(() => !bootstrapper.VideoPlayerWrapper.IsReady);
-        
+            
             // Определяем siblingIndex для нового элемента
             int siblingIndex = insertAtStart ? 0 : _videoBootstrappers.Count;
 

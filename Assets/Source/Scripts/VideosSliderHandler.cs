@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Source.Scripts.VideosLifeCycle;
 using TS.PageSlider;
 using UnityEngine;
 
@@ -16,10 +17,7 @@ namespace Source.Scripts
             _videoLifeCycleController.CurrentVideoIndexChanged += OnCurrentVideoIndexChanged;
         }
 
-        private void OnCurrentVideoIndexChanged(int value)
-        {
-            _pageSlider.SetPage(value);
-        }
+        private void OnCurrentVideoIndexChanged(int value) => _pageSlider.SetPage(value);
 
         private void OnVideoContainersCreated(IReadOnlyList<VideoBootstrapper> value)
         {
